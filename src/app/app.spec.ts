@@ -8,16 +8,27 @@ describe('App', () => {
     }).compileComponents();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  function createComponent() {
+    return TestBed.createComponent(App);
+  }
+
+  it('should create the application', () => {
+    // Arrange & Act
+    const fixture = createComponent();
+
+    // Assert
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should render title', async () => {
-    const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, apm-22');
+  it('should display the application title', () => {
+    // Arrange
+    const fixture = createComponent();
+
+    // Act
+    fixture.detectChanges();
+
+    // Assert
+    const heading = fixture.nativeElement.querySelector('h1');
+    expect(heading?.textContent).toContain('apm-22');
   });
 });
