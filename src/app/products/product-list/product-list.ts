@@ -1,10 +1,10 @@
-import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { CommonModule, CurrencyPipe, LowerCasePipe } from '@angular/common';
+import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-list',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LowerCasePipe, CurrencyPipe],
   templateUrl: './product-list.html',
 })
 export class ProductList {
@@ -26,7 +26,15 @@ export class ProductList {
     },
   ]);
 
+  filteredProducts = computed(() => {
+    const filter = this.listFilter().toLowerCase().trim();
+
+    return !filter
+      ? this.products()
+      : this.products().filter((product) => product.productName.toLowerCase().includes(filter));
+  });
+
   toggleImage() {
-    this.showImage.update(s => !s)
+    this.showImage.update((s) => !s);
   }
 }

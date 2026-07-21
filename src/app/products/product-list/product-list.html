@@ -35,7 +35,7 @@
       </p>
     }
 
-    @if (products().length) {
+    @if (filteredProducts().length) {
 
       <div class="overflow-x-auto">
 
@@ -63,7 +63,7 @@
 
           <tbody class="divide-y divide-slate-100 bg-white">
 
-            @for (product of products(); track product.productId) {
+            @for (product of filteredProducts(); track product.productId) {
               <tr class="hover:bg-slate-50">
 
                 <td class="px-4 py-3">
@@ -80,11 +80,11 @@
                 </td>
 
                 <td class="px-4 py-3 font-medium">
-                  {{ product.productName }}
+                  {{ product.productName}}
                 </td>
 
                 <td class="px-4 py-3">
-                  {{ product.productCode }}
+                  {{ product.productCode | lowercase}}
                 </td>
 
                 <td class="px-4 py-3">
