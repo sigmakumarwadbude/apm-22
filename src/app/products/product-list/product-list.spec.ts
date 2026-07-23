@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductList } from './product-list';
+import { By } from '@angular/platform-browser';
+import { Star } from '../../shared/star/star';
 
 describe(ProductList.name, () => {
   let fixture: ComponentFixture<ProductList>;
@@ -108,5 +110,15 @@ describe(ProductList.name, () => {
     // Assert
     expect(fixture.nativeElement.querySelector('table')).toBeNull();
     expect(fixture.nativeElement.textContent).toContain('No products found.');
+  });
+
+  describe('onRatingClicked', () => {
+    it('should update pageTitle', () => {
+      const star = fixture.debugElement.query(By.directive(Star));
+      star.triggerEventHandler('ratingClicked', '4.5');
+      fixture.detectChanges();
+
+      expect(component.pageTitle()).toBe('Product List 4.5');
+    });
   });
 });
