@@ -96,7 +96,7 @@
                 </td>
 
                 <td class="px-4 py-3 text-center">
-                  {{ product.starRating }}
+                  <app-star [rating]="product.starRating" (ratingClicked)="onRatingClicked($event)" />
                 </td>
 
               </tr>

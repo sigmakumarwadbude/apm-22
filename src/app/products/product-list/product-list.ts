@@ -3,10 +3,11 @@ import { Component, computed, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Product } from '../product';
 import { ConvertToSpacesPipe } from '../../shared/convert-to-spaces-pipe';
+import { Star } from '../../shared/star/star';
 
 @Component({
   selector: 'app-product-list',
-  imports: [CommonModule, FormsModule, LowerCasePipe, CurrencyPipe, ConvertToSpacesPipe],
+  imports: [CommonModule, FormsModule, LowerCasePipe, CurrencyPipe, ConvertToSpacesPipe, Star],
   templateUrl: './product-list.html',
   styles: [`
     thead {
@@ -46,5 +47,9 @@ export class ProductList implements OnInit {
   }
   toggleImage() {
     this.showImage.update((s) => !s);
+  }
+
+  onRatingClicked(message: string) {
+    this.pageTitle.set(`Product List ${message}` )    
   }
 }
