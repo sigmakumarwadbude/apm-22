@@ -1,19 +1,26 @@
 import { CommonModule, CurrencyPipe, LowerCasePipe } from '@angular/common';
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Product } from '../product';
+import { ConvertToSpacesPipe } from '../../shared/convert-to-spaces-pipe';
 
 @Component({
   selector: 'app-product-list',
-  imports: [CommonModule, FormsModule, LowerCasePipe, CurrencyPipe],
+  imports: [CommonModule, FormsModule, LowerCasePipe, CurrencyPipe, ConvertToSpacesPipe],
   templateUrl: './product-list.html',
+  styles: [`
+    thead {
+      color: #337AB7
+    }
+    `]
 })
-export class ProductList {
+export class ProductList implements OnInit {
   pageTitle = signal('Product List');
 
   showImage = signal(false);
   listFilter = signal('');
 
-  products = signal([
+  products = signal<Product[]>([
     {
       productId: 1,
       productName: 'Leaf Rake',
@@ -34,6 +41,9 @@ export class ProductList {
       : this.products().filter((product) => product.productName.toLowerCase().includes(filter));
   });
 
+  ngOnInit(): void {
+    console.log('Component initialized');
+  }
   toggleImage() {
     this.showImage.update((s) => !s);
   }
