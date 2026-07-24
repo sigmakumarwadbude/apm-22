@@ -8,28 +8,25 @@ import { tap, throwError, Observable, catchError } from 'rxjs';
 export class ProductService {
   private readonly productsURL = 'products/products.json';
   private readonly http: HttpClient = inject(HttpClient);
-  
+
   getProducts(): Observable<ReadonlyArray<Product>> {
     return this.http.get<ReadonlyArray<Product>>(this.productsURL).pipe(
       catchError(error => this.handleError(error))
     );
   }
 
-  // handleError(error: HttpErrorResponse): Observable<never> {
-  //   const errorMessage = error instanceof ErrorEvent
-  //   ? `An error occurred: ${error.error.message}`
-  //   : `Server returned code: ${error.status}, error message is: ${error.message}`;
-  //   return throwError(() => new Error(errorMessage));
-  // }
+  private handleError(error: HttpErrorResponse): Observable<never> {
 
-   handleError(error: HttpErrorResponse): Observable<never> {
-    const message =
-    error.error instanceof ErrorEvent
-      ? error.error.message
-      : `Server returned code ${error.status}: ${error.message}`;
+    let message: string;
 
-  return throwError(() => new Error(message));
+    if (error.status === 0) {
+      message = 'Network error. Please check your internet connection.';
+    } else {
+      message = `Server returned code ${error.status}: ${error.message}`;
+    }
+
+    return throwError(() => new Error(message));
   }
 
-  
+
 }

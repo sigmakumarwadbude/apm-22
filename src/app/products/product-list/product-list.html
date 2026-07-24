@@ -25,6 +25,12 @@
         {{ facade.error() }}
       </div>
 
+    } @else if (filteredProducts().length === 0) {
+
+      <div class="py-10 text-center">
+        No products found.
+      </div>
+
     } @else {
 
       <app-product-table

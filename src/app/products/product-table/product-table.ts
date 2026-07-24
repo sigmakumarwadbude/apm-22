@@ -18,4 +18,8 @@ export class ProductTable {
   onRatingClicked(message: string): void {
     this.ratingClicked.emit(message);
   }
+
+  toggleImage(): void {
+    this.showImage.set(!this.showImage());
+  }
 }
