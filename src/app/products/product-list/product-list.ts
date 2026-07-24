@@ -5,10 +5,11 @@ import { Product } from '../product';
 import { ConvertToSpacesPipe } from '../../shared/convert-to-spaces-pipe';
 import { Star } from '../../shared/star/star';
 import { ProductService } from '../product.service';
+import { ProductFilter } from '../product-filter/product-filter';
 
 @Component({
   selector: 'app-product-list',
-  imports: [CommonModule, FormsModule, LowerCasePipe, CurrencyPipe, ConvertToSpacesPipe, Star],
+  imports: [CommonModule, FormsModule, LowerCasePipe, CurrencyPipe, ConvertToSpacesPipe, Star, ProductFilter],
   templateUrl: './product-list.html',
   styles: [
     `
@@ -19,31 +20,59 @@ import { ProductService } from '../product.service';
   ],
 })
 export class ProductList implements OnInit {
-  pageTitle = signal('Product List');
+  private readonly productService = inject(ProductService);
 
-  showImage = signal(false);
-  listFilter = signal('');
+  // UI State
+  readonly pageTitle = signal('Product List');
+  readonly showImage = signal(false);
+  readonly listFilter = signal('');
 
-  private productService = inject(ProductService);
+  readonly loading = signal(false);
+  readonly errorMessage = signal('');
 
-  readonly products = signal<ReadonlyArray<Product>>(this.productService.getProducts());
+  // Data
+  readonly products = signal<readonly Product[]>([]);
 
-  filteredProducts = computed(() => {
-    const filter = this.listFilter().toLowerCase().trim();
+  // Derived State
+  readonly filteredProducts = computed(() => {
+    const filter = this.listFilter().trim().toLowerCase();
 
-    return !filter
-      ? this.products()
-      : this.products().filter((product) => product.productName.toLowerCase().includes(filter));
+    if (!filter) {
+      return this.products();
+    }
+
+    return this.products().filter(product =>
+      product.productName.toLowerCase().includes(filter)
+    );
   });
 
+  readonly productCount = computed(() => this.filteredProducts().length);
+
   ngOnInit(): void {
-    console.log('Component initialized');
-  }
-  toggleImage() {
-    this.showImage.update((s) => !s);
+    this.loadProducts();
   }
 
-  onRatingClicked(message: string) {
+  toggleImage(): void {
+    this.showImage.update(show => !show);
+  }
+
+  onRatingClicked(message: string): void {
     this.pageTitle.set(`Product List ${message}`);
+  }
+
+  private loadProducts(): void {
+    this.loading.set(true);
+    this.errorMessage.set('');
+
+    this.productService.getProducts().subscribe({
+      next: products => {
+        this.products.set(products);
+        this.loading.set(false);
+      },
+      error: err => {
+        this.errorMessage.set(err.message);
+        this.loading.set(false);
+      },
+    });
   }
 }

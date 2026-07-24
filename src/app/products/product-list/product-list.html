@@ -10,30 +10,7 @@
   <div class="space-y-6 p-6">
 
     <!-- Filter -->
-    <div class="flex flex-col gap-4 md:flex-row md:items-center">
-      <label
-        for="filter"
-        class="w-full text-sm font-medium text-slate-700 md:w-32"
-      >
-        Filter by
-      </label>
-
-      <input
-        id="filter"
-        type="text"
-        [ngModel]="listFilter()"
-        (ngModelChange)="listFilter.set($event)"
-        placeholder="Search products..."
-        class="w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-      />
-    </div>
-
-    @if (listFilter()) {
-      <p class="text-sm text-slate-600">
-        Filtered by:
-        <span class="font-semibold">{{ listFilter() }}</span>
-      </p>
-    }
+    <app-product-filter [filter]="listFilter()" [count]="productCount()" />
 
     @if (filteredProducts().length) {
 
