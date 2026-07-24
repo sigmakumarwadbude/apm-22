@@ -31,5 +31,5 @@ import { FormsModule } from '@angular/forms';
 })
 export class ProductFilter {
   readonly filter = model('');
-  readonly count = input(0)
+  readonly count = input(0);
 }
