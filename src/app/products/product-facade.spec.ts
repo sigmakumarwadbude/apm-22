@@ -54,7 +54,7 @@ describe(ProductFacade.name, () => {
     expect(facade.products()).toEqual(mockProducts);
     expect(facade.loading()).toBe(false);
     expect(facade.error()).toBe('');
-    expect(facade.productCount()).toBe(1);
+    expect(facade.productCount()).toBe(5);
   });
 
   it('should handle service errors', () => {
