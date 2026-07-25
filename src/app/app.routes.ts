@@ -1,19 +1,25 @@
 import { Routes } from '@angular/router';
-import { Home } from './home/home';
-import { ProductList } from './products/product-list/product-list';
 
 export const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'products',
-    pathMatch: 'full',
+    path: 'home',
+    loadComponent: () =>
+      import('./home/home').then((m) => m.Home),
   },
   {
     path: 'products',
-    component: ProductList,
+    loadComponent: () =>
+      import('./products/product-list/product-list').then(
+        (m) => m.ProductList
+      ),
   },
   {
-    path: 'home',
-    component: Home,
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'home',
+  },
+  {
+    path: '**',
+    redirectTo: 'home',
   },
 ];
