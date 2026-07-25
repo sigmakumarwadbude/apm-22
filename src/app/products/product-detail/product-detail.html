@@ -11,8 +11,16 @@
       Loading product details...
     </div>
   } @else if (facade.error()) {
-    <div class="p-6 text-center text-red-600">
-      {{ facade.error() }}
+    <div class="space-y-4 p-6 text-center text-red-600">
+      <p>{{ facade.error() }}</p>
+      <div>
+        <button
+          type="button"
+          class="inline-flex items-center rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+          (click)="onBack()">
+          ← Back to Products
+        </button>
+      </div>
     </div>
   } @else if (product(); as selectedProduct) {
     <!-- Body -->
@@ -82,7 +90,7 @@
         class="inline-flex items-center rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
         (click)="onBack()">
 
-        ← Back
+        ← Back to Products
       </button>
     </div>
   }

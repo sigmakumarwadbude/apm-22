@@ -82,13 +82,19 @@ describe('ProductDetail', () => {
     expect(compiled.textContent).toContain('Loading product details...');
   });
 
-  it('should display error message when facade has an error', () => {
+  it('should display error message and back button when facade has an error', () => {
     loading.set(false);
     error.set('Failed to fetch product');
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.textContent).toContain('Failed to fetch product');
+    expect(compiled.textContent).toContain('Back to Products');
+
+    const navigateSpy = vi.spyOn(router, 'navigate');
+    const backBtn: HTMLButtonElement = compiled.querySelector('button')!;
+    backBtn.click();
+    expect(navigateSpy).toHaveBeenCalledWith(['/products']);
   });
 
   it('should navigate to /products when onBack is called', () => {
