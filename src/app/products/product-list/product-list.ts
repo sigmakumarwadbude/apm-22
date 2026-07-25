@@ -1,14 +1,15 @@
-import { CommonModule, CurrencyPipe, LowerCasePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { Product } from '../product';
-import { ConvertToSpacesPipe } from '../../shared/convert-to-spaces-pipe';
-import { Star } from '../../shared/star/star';
 import { ProductService } from '../product.service';
+import { ProductFilter } from '../product-filter/product-filter';
+import { ProductTable } from '../product-table/product-table';
+import { FormsModule } from '@angular/forms';
+import { ProductFacade } from '../product-facade';
 
 @Component({
   selector: 'app-product-list',
-  imports: [CommonModule, FormsModule, LowerCasePipe, CurrencyPipe, ConvertToSpacesPipe, Star],
+  imports: [CommonModule, ProductFilter, ProductTable, FormsModule],
   templateUrl: './product-list.html',
   styles: [
     `
@@ -19,31 +20,29 @@ import { ProductService } from '../product.service';
   ],
 })
 export class ProductList implements OnInit {
-  pageTitle = signal('Product List');
+  readonly facade = inject(ProductFacade);
 
-  showImage = signal(false);
-  listFilter = signal('');
+  // UI State
+  readonly pageTitle = signal('Product List');
+  readonly showImage = signal(false);
+  readonly listFilter = signal('');
 
-  private productService = inject(ProductService);
-
-  readonly products = signal<ReadonlyArray<Product>>(this.productService.getProducts());
-
-  filteredProducts = computed(() => {
-    const filter = this.listFilter().toLowerCase().trim();
-
-    return !filter
-      ? this.products()
-      : this.products().filter((product) => product.productName.toLowerCase().includes(filter));
+  // Derived State
+  readonly filteredProducts = computed(() => {
+    const filter = this.listFilter().trim().toLowerCase();
+    if (!filter) {
+      return this.facade.products();
+    }
+    return this.facade.products().filter(product =>
+      product.productName.toLowerCase().includes(filter)
+    );
   });
 
   ngOnInit(): void {
-    console.log('Component initialized');
-  }
-  toggleImage() {
-    this.showImage.update((s) => !s);
+    this.facade.loadProducts();
   }
 
-  onRatingClicked(message: string) {
+  onRatingClicked(message: string): void {
     this.pageTitle.set(`Product List ${message}`);
   }
 }

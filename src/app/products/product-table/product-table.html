@@ -1,0 +1,46 @@
+<div class="overflow-x-auto">
+  <table class="min-w-full divide-y divide-slate-200">
+    <thead class="bg-slate-100">
+      <tr>
+        <th class="px-4 py-3 text-left">
+          <button type="button" (click)="toggleImage()"
+            class="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700">
+            {{ showImage() ? 'Hide' : 'Show' }} Image
+          </button>
+        </th>
+        <th class="px-4 py-3 text-left">Product</th>
+        <th class="px-4 py-3 text-left">Code</th>
+        <th class="px-4 py-3 text-left">Available</th>
+        <th class="px-4 py-3 text-right">Price</th>
+        <th class="px-4 py-3 text-center">Rating</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100 bg-white">
+      @for (product of products(); track product.productId) {
+      <tr class="hover:bg-slate-50">
+        <td class="px-4 py-3">
+          @if (showImage()) {
+          <img [src]="product.imageUrl" [alt]="product.productName" [title]="product.productName"
+            class="h-12 w-12 rounded object-cover" />
+          }
+        </td>
+        <td class="px-4 py-3 font-medium">
+          {{ product.productName}}
+        </td>
+        <td class="px-4 py-3">
+          {{ product.productCode | lowercase | convertToSpaces}}
+        </td>
+        <td class="px-4 py-3">
+          {{ product.releaseDate | date }}
+        </td>
+        <td class="px-4 py-3 text-right">
+          {{ product.price | currency }}
+        </td>
+        <td class="px-4 py-3 text-center">
+          <app-star [rating]="product.starRating" (ratingClicked)="onRatingClicked($event)" />
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
