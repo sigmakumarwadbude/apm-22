@@ -1,10 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
+import { provideRouter } from '@angular/router';
+import { By } from '@angular/platform-browser';
+import { Navigation } from './shared/layout/navigation/navigation';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
+      providers: [
+        provideRouter([]),
+      ],
     }).compileComponents();
   });
 
@@ -20,15 +26,12 @@ describe('App', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should display the application title', () => {
-    // Arrange
+  it('should pass the title to Navigation', () => {
     const fixture = createComponent();
-
-    // Act
     fixture.detectChanges();
 
-    // Assert
-    const heading = fixture.nativeElement.querySelector('h1');
-    expect(heading?.textContent).toContain('apm-22');
+    const navigation = fixture.debugElement.query(By.directive(Navigation));
+
+    expect(navigation.componentInstance.title()).toBe('apm-22');
   });
 });

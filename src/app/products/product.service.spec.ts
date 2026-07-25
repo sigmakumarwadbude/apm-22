@@ -45,10 +45,42 @@ describe(ProductService.name, () => {
     });
 
     const req = httpMock.expectOne('products/products.json');
-
     expect(req.request.method).toBe('GET');
-
     req.flush(mockProducts);
+  });
+
+  it('should get product by id when found', () => {
+    const mockProducts: readonly Product[] = PRODUCTS;
+
+    service.getProductById(1).subscribe(product => {
+      expect(product).toEqual(PRODUCTS[0]);
+    });
+
+    const req = httpMock.expectOne('products/products.json');
+    req.flush(mockProducts);
+  });
+
+  it('should return null when product by id is not found', () => {
+    const mockProducts: readonly Product[] = PRODUCTS;
+
+    service.getProductById(999).subscribe(product => {
+      expect(product).toBeNull();
+    });
+
+    const req = httpMock.expectOne('products/products.json');
+    req.flush(mockProducts);
+  });
+
+  it('should return null for invalid or non-positive product id without network call', () => {
+    service.getProductById(0).subscribe(product => {
+      expect(product).toBeNull();
+    });
+
+    service.getProductById(NaN).subscribe(product => {
+      expect(product).toBeNull();
+    });
+
+    httpMock.expectNone('products/products.json');
   });
 
   it('should handle server errors', () => {
@@ -63,7 +95,6 @@ describe(ProductService.name, () => {
     });
 
     const req = httpMock.expectOne('products/products.json');
-
     req.flush('Internal Server Error', {
       status: 500,
       statusText: 'Server Error',
@@ -81,8 +112,6 @@ describe(ProductService.name, () => {
     });
 
     const req = httpMock.expectOne('products/products.json');
-
     req.error(new ProgressEvent('Network Error'));
   });
-  
 });

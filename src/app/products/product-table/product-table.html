@@ -25,7 +25,11 @@
           }
         </td>
         <td class="px-4 py-3 font-medium">
-          {{ product.productName}}
+          <a [routerLink]="['/products', product.productId]" [title]="product.productName"
+            [attr.aria-label]="'View details for ' + product.productName"
+            class="font-medium text-blue-600 transition-colors hover:text-blue-800 hover:underline">
+            {{ product.productName}}
+          </a>
         </td>
         <td class="px-4 py-3">
           {{ product.productCode | lowercase | convertToSpaces}}
