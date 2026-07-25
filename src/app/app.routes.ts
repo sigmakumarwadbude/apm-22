@@ -14,6 +14,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'products/:id',
+    loadComponent: () =>
+      import('./products/product-detail/product-detail').then(
+        (m) => m.ProductDetail
+      ),
+  },
+  {
     path: '',
     pathMatch: 'full',
     redirectTo: 'home',
