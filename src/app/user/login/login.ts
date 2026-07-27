@@ -11,9 +11,7 @@ import { UserCredentials } from '../user.model';
 })
 export class Login {
   pageTitle = 'Log In';
-
   errorMessage = signal('');
-
   formModel = signal<UserCredentials>({
     username: '',
     password: '',
@@ -21,7 +19,7 @@ export class Login {
 
   loginForm = form(this.formModel, schema => {
     required(schema.username, { message: 'User Name is required'}),
-    required(schema.password, { message: 'Pawword is reuired'}),
+    required(schema.password, { message: 'Password is required'}),
     minLength(schema.username, 3, { message: 'User name must be at least 3 characters'})
     minLength(schema.password, 3, { message: 'Password must be at least 3 characters'})
   });
