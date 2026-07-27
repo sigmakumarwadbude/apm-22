@@ -21,6 +21,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'login',
+    loadComponent: () =>
+      import('./user/login/login').then(
+        (m) => m.Login
+      ),
+  },
+  {
     path: '',
     pathMatch: 'full',
     redirectTo: 'home',
