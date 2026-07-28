@@ -49,36 +49,54 @@ export class ProductFacade {
    * Checks in-memory products list first before fetching from service.
    */
   loadProductById(id: number): void {
-    if (isNaN(id) || id <= 0) {
+    if (Number.isNaN(id) || id <= 0) {
       this._selectedProduct.set(null);
+      this._loading.set(false);
       this._error.set('Invalid product ID');
       return;
     }
 
     // Check in-memory state first
-    const existing = this.products().find(p => p.productId === id);
-    if (existing) {
-      this._selectedProduct.set(existing);
+    const cachedProduct = this.products().find(p => p.productId === id);
+    if (cachedProduct) {
+      this._selectedProduct.set(cachedProduct);
       this._error.set('');
       return;
     }
 
     this._loading.set(true);
-    this._error.set('');
 
     this.productService.getProductById(id).subscribe({
       next: product => {
-        this._selectedProduct.set(product);
         this._loading.set(false);
         if (!product) {
+          this._selectedProduct.set(null);
           this._error.set(`Product with ID ${id} was not found`);
+          return;
         }
+        this._selectedProduct.set(product);
       },
       error: err => {
         this._error.set(err.message);
         this._loading.set(false);
       },
     });
+  }
+
+  /**
+  * Initialize the selected product.
+  * id === 0 => New Product
+  * id > 0  => Existing Product
+  */
+  initializeProduct(id: number): void {
+    this.clearError();
+
+    if (id === 0) {
+      this._selectedProduct.set(this.createEmptyProduct());
+      return;
+    }
+
+    this.loadProductById(id);
   }
 
   /**
@@ -93,5 +111,18 @@ export class ProductFacade {
    */
   clearError(): void {
     this._error.set('');
+  }
+
+  createEmptyProduct(): Product {
+    return {
+      productId: 0,
+      productName: '',
+      productCode: '',
+      description: '',
+      releaseDate: '',
+      price: 0,
+      starRating: 0,
+      imageUrl: '',
+    };
   }
 }

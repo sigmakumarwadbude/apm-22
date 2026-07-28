@@ -23,8 +23,14 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         </a>
 
         <a routerLink="/products" routerLinkActive="bg-blue-600 text-white"
+        [routerLinkActiveOptions]="{ exact: true }"
           class="rounded-md px-4 py-2 hover:bg-slate-100">
           Products
+        </a>
+        <a routerLink="/products/new" routerLinkActive="bg-blue-600 text-white"
+          [routerLinkActiveOptions]="{exact: true}"
+          class="rounded-md px-4 py-2 hover:bg-slate-100">
+          Add Product
         </a>
       </nav>
     </div>
@@ -54,7 +60,7 @@ export class Navigation {
   readonly isLoggedIn = input<boolean>();
   readonly logout = output<void>();
 
-  onLogout(){
+  onLogout() {
     this.logout.emit();
   }
 }

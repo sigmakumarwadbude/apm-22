@@ -13,6 +13,7 @@
         <th class="px-4 py-3 text-left">Available</th>
         <th class="px-4 py-3 text-right">Price</th>
         <th class="px-4 py-3 text-center">Rating</th>
+        <th></th>
       </tr>
     </thead>
     <tbody class="divide-y divide-slate-100 bg-white">
@@ -42,6 +43,13 @@
         </td>
         <td class="px-4 py-3 text-center">
           <app-star [rating]="product.starRating" (ratingClicked)="onRatingClicked($event)" />
+        </td>
+        <td>
+          <a [routerLink]="['/products', product.productId, 'edit']" [title]="product.productName"
+            [attr.aria-label]="'View details for ' + product.productName"
+            class="font-medium text-blue-600 transition-colors hover:text-blue-800 hover:underline">
+            Edit
+          </a>
         </td>
       </tr>
       }

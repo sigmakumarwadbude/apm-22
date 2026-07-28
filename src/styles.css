@@ -1,3 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+
+
+/* Wizard arrows */
+.wizard-step::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    width: 0;
+    border-top: 24px solid transparent;
+    border-bottom: 24px solid transparent;
+    border-left: 20px solid white;
+}
+
+.wizard-step::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    right: -20px;
+    width: 0;
+    border-top: 24px solid transparent;
+    border-bottom: 24px solid transparent;
+    border-left: 20px solid currentColor;
+    z-index: 10;
+}
+
+.wizard-step:first-child::before,
+.wizard-step:last-child::after {
+    content: none;
+}
