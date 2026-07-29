@@ -1,11 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import { ProductFilter } from '../product-filter/product-filter';
 import { ProductTable } from '../product-table/product-table';
 import { FormsModule } from '@angular/forms';
 import { ProductFacade } from '../product-facade';
+import { ActivatedRoute } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -21,6 +24,7 @@ import { ProductFacade } from '../product-facade';
 })
 export class ProductList implements OnInit {
   readonly facade = inject(ProductFacade);
+  private readonly route = inject(ActivatedRoute);
 
   // UI State
   readonly pageTitle = signal('Product List');
@@ -38,6 +42,13 @@ export class ProductList implements OnInit {
     );
   });
 
+  constructor() {
+    effect(() => {
+      this.showImage.set(
+      this.route.snapshot.queryParamMap.get('showImage') === 'true'
+    );
+    })
+  }
   ngOnInit(): void {
     this.facade.loadProducts();
   }

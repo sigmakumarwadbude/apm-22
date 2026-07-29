@@ -26,7 +26,15 @@ export class ProductDetail implements OnInit {
   }
 
   onBack() {
-    this.router.navigate(['/products']);
+    this.router.navigate(['/products'], {
+      queryParamsHandling: 'preserve',
+    });
+  }
+
+  onEdit() {
+    this.router.navigate(['/products', this.product()?.productId, 'edit'], {
+      queryParamsHandling: 'preserve',
+    });
   }
 
   getProduct(id: number) {
