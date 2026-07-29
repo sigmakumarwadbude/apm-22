@@ -8,30 +8,9 @@ export const routes: Routes = [
   },
   {
     path: 'products',
-    loadComponent: () =>
-      import('./products/product-list/product-list').then(
-        (m) => m.ProductList
-      ),
-  },
-  {
-    path: 'products/new',
-    loadComponent: () =>
-      import('./products/product-edit/product-edit').then(
-        (m) => m.ProductEdit
-      ),
-  },
-  {
-    path: 'products/:id',
-    loadComponent: () =>
-      import('./products/product-detail/product-detail').then(
-        (m) => m.ProductDetail
-      ),
-  },
-  {
-    path: 'products/:id/edit',
-    loadComponent: () =>
-      import('./products/product-edit/product-edit').then(
-        (m) => m.ProductEdit
+    loadChildren: () =>
+      import('./products/products.routes').then(
+        (m) => m.productRoutes
       ),
   },
   {
