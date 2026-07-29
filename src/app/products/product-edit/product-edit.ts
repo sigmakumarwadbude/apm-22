@@ -5,6 +5,7 @@ import { ProductFacade } from '../product-facade';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { createEmptyProduct } from '../product.factory';
 
 @Component({
   imports: [FormField],
@@ -15,29 +16,35 @@ export class ProductEdit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
-  readonly errorMessage = signal('');
+  /**
+   * Display-only state from the facade.
+   */
+  readonly loading = this.facade.loading;
+  readonly errorMessage = computed(() => this.facade.error());
 
+  /**
+   * Local editable copy.
+   * Prevents mutating facade state while editing.
+   */
+  readonly product = signal<Product>(createEmptyProduct());
+
+  /**
+   * Dynamic page title.
+   */
   readonly pageTitle = computed(() =>
     this.product().productId === 0
       ? 'Add Product'
-      : 'Edit Product'
+      : `Edit Product: ${this.product().productName}`
   );
-  /**
-   * Local editable copy.
-   * Prevents editing the facade state until Save is clicked.
-   */
-  readonly product = signal<Product>(this.facade.createEmptyProduct());
 
   /**
-   * Route: /products/:id/edit
-   * id = 0 => New Product
+   * Route:
+   * /products/0/edit  => New Product
+   * /products/:id/edit => Existing Product
    */
   readonly productId = toSignal(
     this.route.paramMap.pipe(
-      map(params => {
-        const id = params.get('id');
-        return id ? Number(id) : 0;
-      })
+      map(params => Number(params.get('id') ?? 0))
     ),
     { initialValue: 0 }
   );
@@ -70,46 +77,36 @@ export class ProductEdit {
       if (selected) {
         this.product.set(structuredClone(selected));
       } else {
-        this.product.set(this.facade.createEmptyProduct());
+        this.product.set(createEmptyProduct());
       }
-    });
-
-    // Synchronize errors.
-    effect(() => {
-      this.errorMessage.set(this.facade.error());
     });
   }
 
   saveProduct(event: SubmitEvent): void {
     event.preventDefault();
 
-    this.errorMessage.set('');
-
     if (this.productForm().invalid()) {
       this.productForm().markAsTouched();
       return;
     }
 
-    // TODO: wire up productService.saveProduct(this.product())
-    // this.facade.saveProduct(this.product())
-    //   .subscribe({
-    //     next: () => this.router.navigate(['/products']),
-    //     error: (err) => this.errorMessage.set(err.message)
-    //   });
+    // TODO
+    // this.facade.saveProduct(this.product());
+  }
+
+  deleteProduct(): void {
+    if (this.product().productId === 0) {
+      this.cancel();
+      return;
+    }
+
+    // TODO
+    // this.facade.deleteProduct(this.product().productId);
   }
 
   cancel(): void {
     this.router.navigate(['/products'], {
       queryParamsHandling: 'preserve',
     });
-  }
-
-  deleteProduct(): void {
-    if (this.product().productId === 0) {
-      this.router.navigate(['/products']);
-      return;
-    }
-
-    // TODO: wire up productService.deleteProduct(this.product().productId)
   }
 }
