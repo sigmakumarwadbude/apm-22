@@ -14,6 +14,7 @@ import { RouterLink } from '@angular/router';
 export class ProductTable {
   readonly products = input.required<readonly Product[]>();
   readonly showImage = model(false);
+  readonly filter = input('');
   readonly ratingClicked = output<string>();
 
   onRatingClicked(message: string): void {

@@ -14,10 +14,24 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'products/new',
+    loadComponent: () =>
+      import('./products/product-edit/product-edit').then(
+        (m) => m.ProductEdit
+      ),
+  },
+  {
     path: 'products/:id',
     loadComponent: () =>
       import('./products/product-detail/product-detail').then(
         (m) => m.ProductDetail
+      ),
+  },
+  {
+    path: 'products/:id/edit',
+    loadComponent: () =>
+      import('./products/product-edit/product-edit').then(
+        (m) => m.ProductEdit
       ),
   },
   {

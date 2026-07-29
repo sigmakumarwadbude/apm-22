@@ -1,0 +1,158 @@
+<div class="mx-auto max-w-4xl rounded-xl bg-white shadow-lg">
+  <!-- Header -->
+  <div class="border-b border-slate-200 px-6 py-4">
+    <h2 class="text-2xl font-semibold text-slate-800">
+      {{ pageTitle() }}
+    </h2>
+  </div>
+
+  <!-- Form -->
+  <form class="space-y-6 p-6" novalidate (submit)="saveProduct($event)" autocomplete="off">
+
+    <!-- Product Name -->
+    <div>
+      <label for="productName" class="mb-2 block text-sm font-medium text-slate-700">
+        Product Name
+      </label>
+
+      <input id="productName" type="text" placeholder="Enter product name" [formField]="productForm.productName" class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-200" />
+
+      @if(productForm.productName().touched() && productForm.productName().invalid()) {
+      @for(error of productForm.productName().errors(); track error) {
+      <p class="mt-1 text-sm text-red-600">
+        {{ error.message }}
+      </p>
+      }
+      }
+    </div>
+
+    <!-- Description -->
+    <div>
+      <label for="description" class="mb-2 block text-sm font-medium text-slate-700">
+        Description
+      </label>
+
+      <textarea id="description" rows="4" placeholder="Enter product description" [formField]="productForm.description"
+        class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+      </textarea>
+    </div>
+
+    <!-- Release Date & Product Code (side by side) -->
+    <div class="grid grid-cols-2 gap-4">
+      <!-- Release Date -->
+      <div>
+        <label for="releaseDate" class="mb-2 block text-sm font-medium text-slate-700">
+          Release Date
+        </label>
+
+        <input id="releaseDate" type="date" [formField]="productForm.releaseDate" class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-200" />
+
+        @if(productForm.releaseDate().touched() && productForm.releaseDate().invalid()) {
+        @for(error of productForm.releaseDate().errors(); track error) {
+        <p class="mt-1 text-sm text-red-600">{{ error.message }}</p>
+        }
+        }
+      </div>
+
+      <!-- Product Code -->
+      <div>
+        <label for="productCode" class="mb-2 block text-sm font-medium text-slate-700">
+          Product Code
+        </label>
+
+        <input id="productCode" type="text" placeholder="Enter product code" [formField]="productForm.productCode"
+          class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-200" />
+
+        @if(productForm.productCode().touched() && productForm.productCode().invalid()) {
+        @for(error of productForm.productCode().errors(); track error) {
+        <p class="mt-1 text-sm text-red-600">
+          {{ error.message }}
+        </p>
+        }
+        }
+      </div>
+    </div>
+
+    <!-- Price & Star Rating (side by side) -->
+    <div class="grid grid-cols-2 gap-4">
+
+      <!-- Price -->
+      <div>
+        <label for="price" class="mb-2 block text-sm font-medium text-slate-700">
+          Price ($)
+        </label>
+
+        <input id="price" type="number" step="0.01" placeholder="0.00" [formField]="productForm.price" class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition
+                 focus:border-blue-500 focus:ring-2 focus:ring-blue-200" />
+
+        @if(productForm.price().touched() && productForm.price().invalid()) {
+        @for(error of productForm.price().errors(); track error) {
+        <p class="mt-1 text-sm text-red-600">{{ error.message }}</p>
+        }
+        }
+      </div>
+
+      <!-- Star Rating -->
+      <div>
+        <label for="starRating" class="mb-2 block text-sm font-medium text-slate-700">
+          Star Rating (1–5)
+        </label>
+
+        <input id="starRating" type="number" step="0.5" placeholder="1–5" [formField]="productForm.starRating" class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition
+                 focus:border-blue-500 focus:ring-2 focus:ring-blue-200" />
+
+        @if(productForm.starRating().touched() && productForm.starRating().invalid()) {
+        @for(error of productForm.starRating().errors(); track error) {
+        <p class="mt-1 text-sm text-red-600">{{ error.message }}</p>
+        }
+        }
+      </div>
+
+    </div>
+
+    <!-- Image URL -->
+    <div>
+      <label for="imageUrl" class="mb-2 block text-sm font-medium text-slate-700">
+        Image URL
+      </label>
+
+      <input id="imageUrl" type="url" placeholder="https://example.com/image.png" [formField]="productForm.imageUrl"
+        class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-200" />
+    </div>
+
+    <!-- Buttons -->
+
+    <div class="flex flex-wrap gap-3 pt-2">
+
+      <button type="submit" [disabled]="productForm().invalid()" class="rounded-lg bg-blue-600 px-5 py-2 text-white transition
+               hover:bg-blue-700
+               disabled:cursor-not-allowed
+               disabled:opacity-50">
+        Save
+      </button>
+
+      <button type="button" (click)="cancel()"
+        class="rounded-lg border border-slate-300 px-5 py-2 text-slate-700 transition hover:bg-slate-100">
+        Cancel
+      </button>
+      @if (product().productId > 0) {
+      <button type="button" (click)="deleteProduct()"
+        class="rounded-lg bg-red-600 px-5 py-2 text-white transition hover:bg-red-700">
+        Delete
+      </button>
+      }
+    </div>
+
+  </form>
+</div>
+
+@if(errorMessage()) {
+<div class="mt-6 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+  {{ errorMessage() }}
+</div>
+}

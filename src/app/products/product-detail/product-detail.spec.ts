@@ -94,12 +94,24 @@ describe('ProductDetail', () => {
     const navigateSpy = vi.spyOn(router, 'navigate');
     const backBtn: HTMLButtonElement = compiled.querySelector('button')!;
     backBtn.click();
-    expect(navigateSpy).toHaveBeenCalledWith(['/products']);
+    expect(navigateSpy).toHaveBeenCalledWith(
+      ['/products'],
+      {
+        queryParamsHandling: 'preserve',
+      }
+    );
   });
 
   it('should navigate to /products when onBack is called', () => {
     const navigateSpy = vi.spyOn(router, 'navigate');
     component.onBack();
-    expect(navigateSpy).toHaveBeenCalledWith(['/products']);
+    expect(navigateSpy).toHaveBeenCalledWith(
+      ['/products'],
+      {
+        queryParamsHandling: 'preserve',
+      }
+    );
   });
+
+  
 });
