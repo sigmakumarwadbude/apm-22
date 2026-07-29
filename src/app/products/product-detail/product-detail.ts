@@ -1,8 +1,8 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Star } from '../../shared/star/star';
 import { ConvertToSpacesPipe } from '../../shared/convert-to-spaces-pipe';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ProductFacade } from '../product-facade';
 import { injectPageTitle } from '../../shared/route-data';
 
@@ -11,20 +11,12 @@ import { injectPageTitle } from '../../shared/route-data';
   imports: [CommonModule, Star, ConvertToSpacesPipe, CurrencyPipe],
   templateUrl: './product-detail.html',
 })
-export class ProductDetail implements OnInit {
+export class ProductDetail {
   readonly router = inject(Router);
   readonly facade = inject(ProductFacade);
   readonly pageTitle = injectPageTitle();
 
   readonly product = this.facade.selectedProduct;
-  private route = inject(ActivatedRoute);
-
-  ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (id) {
-      this.getProduct(id);
-    }
-  }
 
   onBack() {
     this.router.navigate(['/products'], {
@@ -36,9 +28,5 @@ export class ProductDetail implements OnInit {
     this.router.navigate(['/products', this.product()?.productId, 'edit'], {
       queryParamsHandling: 'preserve',
     });
-  }
-
-  getProduct(id: number) {
-    this.facade.loadProductById(id);
   }
 }
