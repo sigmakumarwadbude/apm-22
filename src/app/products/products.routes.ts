@@ -14,6 +14,7 @@ export const productRoutes: Routes = [
       import('./product-edit/product-edit').then(
         (m) => m.ProductEdit
       ),
+    data: { title: 'New Product' }
   },
   {
     path: ':id',
@@ -21,6 +22,7 @@ export const productRoutes: Routes = [
       import('./product-detail/product-detail').then(
         (m) => m.ProductDetail
       ),
+    data: { title: 'Product Detail' }
   },
   {
     path: ':id/edit',
@@ -28,5 +30,6 @@ export const productRoutes: Routes = [
       import('./product-edit/product-edit').then(
         (m) => m.ProductEdit
       ),
+    data: { title: 'Edit Product' }
   }
 ];

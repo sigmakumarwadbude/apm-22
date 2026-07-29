@@ -3,6 +3,7 @@ import { form, FormField, minLength, required } from '@angular/forms/signals';
 import { Auth } from '../auth';
 import { Router, RouterLink } from '@angular/router';
 import { UserCredentials } from '../user.model';
+import { injectPageTitle } from '../../shared/route-data';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,8 @@ import { UserCredentials } from '../user.model';
   templateUrl: './login.html',
 })
 export class Login {
-  pageTitle = 'Log In';
+  readonly pageTitle = injectPageTitle();
+
   errorMessage = signal('');
   formModel = signal<UserCredentials>({
     username: '',
@@ -18,27 +20,27 @@ export class Login {
   })
 
   loginForm = form(this.formModel, schema => {
-    required(schema.username, { message: 'User Name is required'}),
-    required(schema.password, { message: 'Password is required'}),
-    minLength(schema.username, 3, { message: 'User name must be at least 3 characters'})
-    minLength(schema.password, 3, { message: 'Password must be at least 3 characters'})
+    required(schema.username, { message: 'User Name is required' }),
+      required(schema.password, { message: 'Password is required' }),
+      minLength(schema.username, 3, { message: 'User name must be at least 3 characters' })
+    minLength(schema.password, 3, { message: 'Password must be at least 3 characters' })
   });
 
   private authService = inject(Auth);
   private router = inject(Router);
 
-  login(event: SubmitEvent){
+  login(event: SubmitEvent) {
     event.preventDefault();
     this.errorMessage.set('')
 
-    if(this.loginForm().invalid()){
+    if (this.loginForm().invalid()) {
       this.errorMessage.set('Invalid username or password');
       this.loginForm().markAsTouched();
       return;
     }
 
-    const {username, password} = this.loginForm().value();
-    
+    const { username, password } = this.loginForm().value();
+
     this.authService.login(username, password);
     this.router.navigate(['/products'])
   }

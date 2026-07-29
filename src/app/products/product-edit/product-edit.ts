@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { createEmptyProduct } from '../product.factory';
+import { injectPageTitle } from '../../shared/route-data';
 
 @Component({
   imports: [FormField],
@@ -33,8 +34,8 @@ export class ProductEdit {
    */
   readonly pageTitle = computed(() =>
     this.product().productId === 0
-      ? 'Add Product'
-      : `Edit Product: ${this.product().productName}`
+      ? injectPageTitle()
+      : `${injectPageTitle()}: ${this.product().productName}`
   );
 
   /**

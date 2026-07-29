@@ -4,6 +4,7 @@ import { Star } from '../../shared/star/star';
 import { ConvertToSpacesPipe } from '../../shared/convert-to-spaces-pipe';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductFacade } from '../product-facade';
+import { injectPageTitle } from '../../shared/route-data';
 
 @Component({
   selector: 'app-product-detail',
@@ -13,7 +14,7 @@ import { ProductFacade } from '../product-facade';
 export class ProductDetail implements OnInit {
   readonly router = inject(Router);
   readonly facade = inject(ProductFacade);
-  readonly pageTitle = 'Product Detail';
+  readonly pageTitle = injectPageTitle();
 
   readonly product = this.facade.selectedProduct;
   private route = inject(ActivatedRoute);
