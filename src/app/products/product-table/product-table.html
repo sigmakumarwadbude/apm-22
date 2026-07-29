@@ -27,9 +27,8 @@
         </td>
         <td class="px-4 py-3 font-medium">
           <a [routerLink]="['/products', product.productId]" [title]="product.productName"
-            [queryParams]="{ 'showImage': showImage() }"
-            
-             [attr.aria-label]="'View details for ' + product.productName"
+            [queryParams]="{ 'showImage': showImage(), 'filterBy': filter() }"
+            [attr.aria-label]="'View details for ' + product.productName"
             class="font-medium text-blue-600 transition-colors hover:text-blue-800 hover:underline">
             {{ product.productName}}
           </a>
@@ -48,6 +47,7 @@
         </td>
         <td>
           <a [routerLink]="['/products', product.productId, 'edit']" [title]="product.productName"
+            [queryParams]="{ 'showImage': showImage(), 'filterBy': filter() }"
             [attr.aria-label]="'View details for ' + product.productName"
             class="font-medium text-blue-600 transition-colors hover:text-blue-800 hover:underline">
             Edit

@@ -99,7 +99,9 @@ export class ProductEdit {
   }
 
   cancel(): void {
-    this.router.navigate(['/products']);
+    this.router.navigate(['/products'], {
+      queryParamsHandling: 'preserve',
+    });
   }
 
   deleteProduct(): void {

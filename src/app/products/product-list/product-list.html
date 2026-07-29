@@ -36,6 +36,7 @@
       <app-product-table
         [products]="filteredProducts()"
         [(showImage)]="showImage"
+        [filter]="listFilter()"
         (ratingClicked)="onRatingClicked($event)">
       </app-product-table>
 
