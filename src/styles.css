@@ -1,33 +1,103 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
 
-@import 'tailwindcss';
+/* Wizard Tabs */
+.wizard-step {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
+  min-width: 160px;
+  height: 48px;
 
-/* Wizard arrows */
+  padding: 0 2.5rem;
+  margin-right: 20px;
+
+  background: #f1f5f9; /* slate-100 */
+  color: #475569;      /* slate-600 */
+
+  font-weight: 500;
+  text-decoration: none;
+
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Hover */
+.wizard-step:hover {
+  background: #e2e8f0; /* slate-200 */
+  color: #0f172a;      /* slate-900 */
+}
+
+/* Left cutout */
 .wizard-step::before {
-    content: "";
-    position: absolute;
-    inset-block: 0;
-    left: 0;
-    width: 0;
-    border-top: 24px solid transparent;
-    border-bottom: 24px solid transparent;
-    border-left: 20px solid white;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 0;
+  height: 0;
+
+  border-top: 24px solid transparent;
+  border-bottom: 24px solid transparent;
+  border-left: 20px solid #ffffff;
+
+  z-index: 1;
 }
 
+/* Right arrow */
 .wizard-step::after {
-    content: "";
-    position: absolute;
-    inset-block: 0;
-    right: -20px;
-    width: 0;
-    border-top: 24px solid transparent;
-    border-bottom: 24px solid transparent;
-    border-left: 20px solid currentColor;
-    z-index: 10;
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -20px;
+
+  width: 0;
+  height: 0;
+
+  border-top: 24px solid transparent;
+  border-bottom: 24px solid transparent;
+  border-left: 20px solid #f1f5f9;
+
+  z-index: 2;
 }
 
-.wizard-step:first-child::before,
+/* First tab */
+.wizard-step:first-child {
+  border-radius: 0.5rem 0 0 0;
+}
+
+.wizard-step:first-child::before {
+  content: none;
+}
+
+/* Last tab */
+.wizard-step:last-child {
+  border-radius: 0 0.5rem 0 0;
+}
+
 .wizard-step:last-child::after {
-    content: none;
+  content: none;
+}
+
+/* Active tab */
+.tab-active {
+  background: #2563eb; /* blue-600 */
+  color: #ffffff;
+}
+
+.tab-active::after {
+  border-left-color: #2563eb;
+}
+
+/* Optional keyboard focus */
+.wizard-step:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
 }

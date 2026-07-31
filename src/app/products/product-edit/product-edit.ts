@@ -1,15 +1,15 @@
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { Product } from '../product';
-import { form, FormField, max, min, minLength, required } from '@angular/forms/signals';
+import { form,  max, min, minLength, required } from '@angular/forms/signals';
 import { ProductFacade } from '../product-facade';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { createEmptyProduct } from '../product.factory';
 import { injectPageTitle } from '../../shared/route-data';
 
 @Component({
-  imports: [FormField],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './product-edit.html',
 })
 export class ProductEdit {
@@ -29,13 +29,14 @@ export class ProductEdit {
    */
   readonly product = signal<Product>(createEmptyProduct());
 
+  readonly basePageTitle = injectPageTitle();
   /**
    * Dynamic page title.
    */
   readonly pageTitle = computed(() =>
     this.product().productId === 0
-      ? injectPageTitle()
-      : `${injectPageTitle()}: ${this.product().productName}`
+      ? this.basePageTitle
+      : `${this.basePageTitle}: ${this.product().productName}`
   );
 
   /**
@@ -65,6 +66,12 @@ export class ProductEdit {
     max(schema.starRating, 5, { message: 'Rating must be 5 or less' });
   });
 
+  readonly vm = {
+    product: this.product,
+    productForm: this.productForm,
+    loading: this.loading,
+  };
+
   constructor() {
     // Initialize product whenever the route changes.
     effect(() => {
@@ -83,8 +90,10 @@ export class ProductEdit {
     });
   }
 
-  saveProduct(event: SubmitEvent): void {
-    event.preventDefault();
+  saveProduct(event?: SubmitEvent): void {
+    if (event) {
+      event.preventDefault();
+    }
 
     if (this.productForm().invalid()) {
       this.productForm().markAsTouched();

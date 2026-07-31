@@ -10,5 +10,6 @@ export function createEmptyProduct(): Product {
     price: 0,
     starRating: 0,
     imageUrl: '',
+    tags: [],
   };
 }

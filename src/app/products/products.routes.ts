@@ -14,7 +14,33 @@ export const productRoutes: Routes = [
       import('./product-edit/product-edit').then(
         (m) => m.ProductEdit
       ),
-    data: { title: 'New Product' }
+    data: { title: 'New Product' },
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./product-edit/product-edit-info').then(
+            (m) => m.ProductEditInfo
+          ),
+        data: { title: 'Product Info' }
+      },
+      {
+        path: 'info',
+        loadComponent: () =>
+          import('./product-edit/product-edit-info').then(
+            (m) => m.ProductEditInfo
+          ),
+        data: { title: 'Product Info' }
+      },
+      {
+        path: 'tags',
+        loadComponent: () =>
+          import('./product-edit/product-edit-tags').then(
+            (m) => m.ProductEditTags
+          ),
+        data: { title: 'Product Tags' }
+      }
+    ]
   },
   {
     path: ':id',
@@ -30,6 +56,32 @@ export const productRoutes: Routes = [
       import('./product-edit/product-edit').then(
         (m) => m.ProductEdit
       ),
-    data: { title: 'Edit Product' }
+    data: { title: 'Edit Product' },
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./product-edit/product-edit-info').then(
+            (m) => m.ProductEditInfo
+          ),
+        data: { title: 'Product Info' }
+      },
+      {
+        path: 'info',
+        loadComponent: () =>
+          import('./product-edit/product-edit-info').then(
+            (m) => m.ProductEditInfo
+          ),
+        data: { title: 'Product Info' }
+      },
+      {
+        path: 'tags',
+        loadComponent: () =>
+          import('./product-edit/product-edit-tags').then(
+            (m) => m.ProductEditTags
+          ),
+        data: { title: 'Product Tags' }
+      }
+    ]
   }
 ];

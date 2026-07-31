@@ -1,1 +1,14 @@
-<p>product-edit-tags works!</p>
+<form class="space-y-6 p-6" novalidate autocomplete="off">
+  <!-- Image URL -->
+  <div>
+    <label for="imageUrl" class="mb-2 block text-sm font-medium text-slate-700">
+      Image URL
+    </label>
+
+    <input id="imageUrl" type="url" placeholder="https://example.com/image.png" [formField]="vm.productForm.imageUrl"
+      class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200" />
+  </div>
+
+  <!-- Tags (comma separated example) -->
+  <!-- Note: Depending on your signal forms array implementation, you might need a different binding here. We'll map it to a simple string field or leave it for further integration. -->
+</form>
