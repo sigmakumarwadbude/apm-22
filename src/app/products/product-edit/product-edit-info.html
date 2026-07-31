@@ -2,70 +2,40 @@
 
     <!-- Product Name -->
     <div>
-        <label for="productName" class="mb-2 block text-sm font-medium text-slate-700">
-            Product Name
-        </label>
-
-        <input id="productName" type="text" placeholder="Enter product name" [formField]="vm.productForm.productName"
-            class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition
-               focus:border-blue-500 focus:ring-2 focus:ring-blue-200" />
-
-        @if(vm.productForm.productName().touched() && vm.productForm.productName().invalid()) {
-        @for(error of vm.productForm.productName().errors(); track error) {
-        <p class="mt-1 text-sm text-red-600">
-            {{ error.message }}
-        </p>
-        }
-        }
+        <app-form-field label="Product Name" fieldId="productName">
+            <input id="productName" [formField]="vm.productForm.productName" class="input" />
+            <app-form-errors [field]="vm.productForm.productName" />
+        </app-form-field>
     </div>
 
     <!-- Description -->
     <div>
-        <label for="description" class="mb-2 block text-sm font-medium text-slate-700">
-            Description
-        </label>
+        <app-form-field label="Description" fieldId="description">
+            <textarea id="description" rows="4" placeholder="Enter product description"
+                [formField]="vm.productForm.description" class="input">
+            </textarea>
+            <app-form-errors [field]="vm.productForm.description" />
+        </app-form-field>
 
-        <textarea id="description" rows="4" placeholder="Enter product description"
-            [formField]="vm.productForm.description" class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition
-               focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
-      </textarea>
     </div>
 
     <!-- Release Date & Product Code (side by side) -->
     <div class="grid grid-cols-2 gap-4">
         <!-- Release Date -->
         <div>
-            <label for="releaseDate" class="mb-2 block text-sm font-medium text-slate-700">
-                Release Date
-            </label>
-
-            <input id="releaseDate" type="date" [formField]="vm.productForm.releaseDate" class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition
-               focus:border-blue-500 focus:ring-2 focus:ring-blue-200" />
-
-            @if(vm.productForm.releaseDate().touched() && vm.productForm.releaseDate().invalid()) {
-            @for(error of vm.productForm.releaseDate().errors(); track error) {
-            <p class="mt-1 text-sm text-red-600">{{ error.message }}</p>
-            }
-            }
+            <app-form-field label="Release Date" fieldId="releaseDate">
+                <input id="releaseDate" [formField]="vm.productForm.releaseDate" class="input" />
+                <app-form-errors [field]="vm.productForm.releaseDate" />
+            </app-form-field>
         </div>
 
         <!-- Product Code -->
         <div>
-            <label for="productCode" class="mb-2 block text-sm font-medium text-slate-700">
-                Product Code
-            </label>
-
-            <input id="productCode" type="text" placeholder="Enter product code" [formField]="vm.productForm.productCode"
-                class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition
-               focus:border-blue-500 focus:ring-2 focus:ring-blue-200" />
-
-            @if(vm.productForm.productCode().touched() && vm.productForm.productCode().invalid()) {
-            @for(error of vm.productForm.productCode().errors(); track error) {
-            <p class="mt-1 text-sm text-red-600">
-                {{ error.message }}
-            </p>
-            }
-            }
+            <app-form-field label="Product Code" fieldId="productCode">
+                <input id="productCode" type="text" placeholder="Enter product code"
+                    [formField]="vm.productForm.productCode" class="input" />
+                <app-form-errors [field]="vm.productForm.productCode" />
+            </app-form-field>
         </div>
     </div>
 
@@ -74,37 +44,20 @@
 
         <!-- Price -->
         <div>
-            <label for="price" class="mb-2 block text-sm font-medium text-slate-700">
-                Price ($)
-            </label>
-
-            <input id="price" type="number" step="0.01" placeholder="0.00" [formField]="vm.productForm.price" class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition
-                 focus:border-blue-500 focus:ring-2 focus:ring-blue-200" />
-
-            @if(vm.productForm.price().touched() && vm.productForm.price().invalid()) {
-            @for(error of vm.productForm.price().errors(); track error) {
-            <p class="mt-1 text-sm text-red-600">{{ error.message }}</p>
-            }
-            }
+            <app-form-field label="Price ($)" fieldId="price">
+                <input id="price" type="number" step="0.01" placeholder="0.00" [formField]="vm.productForm.price"
+                    class="input" />
+                <app-form-errors [field]="vm.productForm.price" />
+            </app-form-field>
         </div>
 
         <!-- Star Rating -->
         <div>
-            <label for="starRating" class="mb-2 block text-sm font-medium text-slate-700">
-                Star Rating (1–5)
-            </label>
-
-            <input id="starRating" type="number" step="0.5" placeholder="1–5" [formField]="vm.productForm.starRating"
-                class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition
-                 focus:border-blue-500 focus:ring-2 focus:ring-blue-200" />
-
-            @if(vm.productForm.starRating().touched() && vm.productForm.starRating().invalid()) {
-            @for(error of vm.productForm.starRating().errors(); track error) {
-            <p class="mt-1 text-sm text-red-600">{{ error.message }}</p>
-            }
-            }
+            <app-form-field label="Star Rating (1–5)" fieldId="starRating">
+                <input id="starRating" type="number" step="0.5" placeholder="1–5"
+                    [formField]="vm.productForm.starRating" class="input" />
+                <app-form-errors [field]="vm.productForm.starRating" />
+            </app-form-field>
         </div>
-
     </div>
-
 </form>
