@@ -20,7 +20,24 @@ export class ProductMapper {
     };
   }
 
-  static toPrisma(product: Partial<Product>): Prisma.ProductUncheckedCreateInput | Prisma.ProductUncheckedUpdateInput {
+  static toCreatePrisma(
+    product: Product
+  ): Prisma.ProductUncheckedCreateInput {
+    return {
+      productName: product.productName,
+      productCode: product.productCode,
+      releaseDate: product.releaseDate,
+      description: product.description,
+      price: product.price,
+      starRating: product.starRating,
+      imageUrl: product.imageUrl,
+      tags: product.tags,
+    };
+  }
+
+  static toUpdatePrisma(
+    product: Partial<Product>
+  ): Prisma.ProductUncheckedUpdateInput {
     return {
       ...(product.productName !== undefined && { productName: product.productName }),
       ...(product.productCode !== undefined && { productCode: product.productCode }),
