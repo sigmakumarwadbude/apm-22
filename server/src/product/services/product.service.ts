@@ -57,4 +57,15 @@ export class ProductService {
 
         return ProductMapper.toDto(updated);
     }
+
+    async delete(productId: number): Promise<void> {
+
+        const existing = await this.repository.findById(productId);
+
+        if (!existing) {
+            throw new Error('Product not found');
+        }
+
+        await this.repository.delete(productId);
+    }
 }

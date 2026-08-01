@@ -11,8 +11,8 @@ const service = new ProductService(repository);
 const controller = new ProductController(service);
 
 router.get(
-  '/products',
-  asyncHandler(controller.getAll),
+    '/products',
+    asyncHandler(controller.getAll),
 );
 
 router.get(
@@ -28,6 +28,11 @@ router.post(
 router.put(
     '/products/:id',
     asyncHandler(controller.update)
+)
+
+router.delete(
+    '/products/:id',
+    asyncHandler(controller.delete)
 )
 
 export default router;

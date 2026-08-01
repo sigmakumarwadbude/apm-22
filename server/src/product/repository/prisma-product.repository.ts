@@ -47,4 +47,10 @@ export class PrismaProductRepository
 
         return ProductMapper.fromPrisma(updated);
     }
+
+    async delete(id: number): Promise<void> {
+        await prisma.product.delete({
+            where: { id },
+        });
+    }
 }

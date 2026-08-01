@@ -11,4 +11,6 @@ export interface ProductRepository {
     productId: number,
     product: Partial<Product>
   ): Promise<Product>;
+
+  delete(productId: number): Promise<void>;
 }
