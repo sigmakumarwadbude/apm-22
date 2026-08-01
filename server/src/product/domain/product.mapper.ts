@@ -2,6 +2,7 @@ import { Prisma, Product as PrismaProduct } from '@prisma/client';
 import { Product } from './product';
 import { ProductDto } from '../dto/product.dto';
 import { CreateProductDto } from '../dto/create-product.dto';
+import { UpdateProductDto } from '../dto/update-product.dto';
 
 export class ProductMapper {
 
@@ -43,6 +44,21 @@ export class ProductMapper {
       starRating: product.starRating,
       imageUrl: product.imageUrl,
       tags: product.tags,
+    };
+  }
+
+  static toPartialDomain(dto: UpdateProductDto): Partial<Product> {
+    return {
+      ...(dto.productName !== undefined && { productName: dto.productName }),
+      ...(dto.productCode !== undefined && { productCode: dto.productCode }),
+      ...(dto.releaseDate !== undefined && {
+        releaseDate: new Date(dto.releaseDate),
+      }),
+      ...(dto.description !== undefined && { description: dto.description }),
+      ...(dto.price !== undefined && { price: dto.price }),
+      ...(dto.starRating !== undefined && { starRating: dto.starRating }),
+      ...(dto.imageUrl !== undefined && { imageUrl: dto.imageUrl }),
+      ...(dto.tags !== undefined && { tags: dto.tags }),
     };
   }
 
