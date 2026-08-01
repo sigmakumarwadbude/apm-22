@@ -25,4 +25,10 @@ export class ProductController {
             .location(`/api/products/${product.id}`)
             .json(product);
     };
+
+    update = async (req: Request, res: Response) => {
+        const id = Number(req.params.id);
+        const product = await this.service.update(id, req.body);
+        res.json(product);
+    };
 }

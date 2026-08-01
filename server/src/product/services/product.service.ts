@@ -36,4 +36,25 @@ export class ProductService {
 
         return ProductMapper.toDto(created);
     }
+
+    async update(
+        productId: number,
+        dto: UpdateProductDto
+    ): Promise<ProductDto> {
+
+        const existing = await this.repository.findById(productId);
+
+        if (!existing) {
+            throw new Error('Product not found');
+        }
+
+        const updatedProduct = ProductMapper.toPartialDomain(dto);
+
+        const updated = await this.repository.update(
+            productId,
+            updatedProduct
+        );
+
+        return ProductMapper.toDto(updated);
+    }
 }

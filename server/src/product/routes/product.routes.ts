@@ -25,4 +25,9 @@ router.post(
     asyncHandler(controller.create)
 )
 
+router.put(
+    '/products/:id',
+    asyncHandler(controller.update)
+)
+
 export default router;

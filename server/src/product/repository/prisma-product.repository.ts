@@ -35,4 +35,16 @@ export class PrismaProductRepository
 
         return ProductMapper.fromPrisma(created);
     }
+
+    async update(
+        id: number,
+        product: Partial<Product>
+    ): Promise<Product> {
+        const updated = await prisma.product.update({
+            where: { id },
+            data: ProductMapper.toUpdatePrisma(product),
+        });
+
+        return ProductMapper.fromPrisma(updated);
+    }
 }
