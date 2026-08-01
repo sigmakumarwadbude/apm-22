@@ -10,29 +10,15 @@ const repository = new PrismaProductRepository();
 const service = new ProductService(repository);
 const controller = new ProductController(service);
 
-router.get(
-    '/products',
-    asyncHandler(controller.getAll),
-);
+router
+    .route('/')
+    .get(asyncHandler(controller.getAll))
+    .post(asyncHandler(controller.create));
 
-router.get(
-    '/products/:id',
-    asyncHandler(controller.getById),
-);
-
-router.post(
-    '/products',
-    asyncHandler(controller.create)
-)
-
-router.put(
-    '/products/:id',
-    asyncHandler(controller.update)
-)
-
-router.delete(
-    '/products/:id',
-    asyncHandler(controller.delete)
-)
+router
+    .route('/:id')
+    .get(asyncHandler(controller.getById))
+    .put(asyncHandler(controller.update))
+    .delete(asyncHandler(controller.delete));
 
 export default router;

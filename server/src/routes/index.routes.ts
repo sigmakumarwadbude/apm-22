@@ -5,6 +5,6 @@ import productRoutes from '../product/routes/product.routes';
 const router = Router();
 
 router.use(healthRoutes);
-router.use(productRoutes);
+router.use('/products', productRoutes);
 
 export default router;
