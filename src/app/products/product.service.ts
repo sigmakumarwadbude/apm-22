@@ -2,44 +2,48 @@ import { inject, Injectable } from '@angular/core';
 import { Product } from './product';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError, Observable, catchError, map, of } from 'rxjs';
+import { ProductDto } from './product.dto';
+import { ProductMapper } from './product.mapper';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private readonly productsURL = 'products/products.json';
+  private readonly productsURL = 'api/products';
   private readonly http: HttpClient = inject(HttpClient);
 
   /**
    * Fetches all products from the data source.
    */
-  getProducts(): Observable<ReadonlyArray<Product>> {
+  getProducts(): Observable<readonly Product[]> {
     return this.http
-      .get<ReadonlyArray<Product>>(this.productsURL)
-      .pipe(catchError(error => this.handleError(error)));
+      .get<readonly ProductDto[]>(this.productsURL)
+      .pipe(
+        map(ProductMapper.fromDtos),
+        catchError(error => this.handleError(error))
+      );
   }
 
   /**
-   * Fetches a single product by ID.
-   * Returns Observable<Product | null>.
+   * Fetch a product by id.
    */
-  getProductById(id: number): Observable<Product | null> {
-    if (isNaN(id) || id <= 0) {
-      return of(null);
-    }
-    return this.getProducts().pipe(
-      map(products => products.find(p => p.productId === id) ?? null),
-      catchError(error => this.handleError(error))
-    );
+  getProductById(id: number): Observable<Product> {
+    return this.http
+      .get<ProductDto>(`${this.productsURL}/${id}`)
+      .pipe(
+        map(ProductMapper.fromDto),
+        catchError(error => this.handleError(error))
+      );
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     let message: string;
 
     if (error.status === 0) {
-      message = 'Network error. Please check your internet connection.';
+      message = 'Unable to connect to the server.';
     } else {
-      message = `Server returned code ${error.status}: ${error.message}`;
+      message = error.error?.message ??
+        `Server returned ${error.status}: ${error.status}`;
     }
 
     return throwError(() => new Error(message));

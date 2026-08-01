@@ -37,7 +37,7 @@
           {{ product.productCode | lowercase | convertToSpaces}}
         </td>
         <td class="px-4 py-3">
-          {{ product.releaseDate | date }}
+          {{ product.releaseDate  | date:'mediumDate' }}
         </td>
         <td class="px-4 py-3 text-right">
           {{ product.price | currency }}
