@@ -4,12 +4,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError, Observable, catchError, map, of } from 'rxjs';
 import { ProductDto } from './product.dto';
 import { ProductMapper } from './product.mapper';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private readonly productsURL = 'api/products';
+  private readonly productsURL = `${environment.apiUrl}/products`;
   private readonly http: HttpClient = inject(HttpClient);
 
   /**
@@ -37,15 +38,53 @@ export class ProductService {
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    let message: string;
+    if (!environment.production) {
+      console.error('HTTP Error:', error);
 
-    if (error.status === 0) {
-      message = 'Unable to connect to the server.';
-    } else {
-      message = error.error?.message ??
-        `Server returned ${error.status}: ${error.status}`;
+      const message =
+        error.error?.message ??
+        `HTTP ${error.status}`;
+
+      return throwError(() => new Error(message));
     }
 
-    return throwError(() => new Error(message));
+    return throwError(() => new Error(this.getUserMessage(error)));
+  }
+
+  private getUserMessage(error: HttpErrorResponse): string {
+    if (error.status === 0) {
+      return 'Unable to connect to the server. Please check your internet connection.';
+    }
+
+    switch (error.status) {
+      case 400:
+        return 'The request could not be processed. Please verify your input and try again.';
+
+      case 401:
+        return 'Your session has expired. Please sign in again.';
+
+      case 403:
+        return 'You do not have permission to perform this action.';
+
+      case 404:
+        return 'The requested resource could not be found.';
+
+      case 409:
+        return 'The requested operation could not be completed because of a conflict.';
+
+      case 422:
+        return 'One or more values are invalid. Please review your input.';
+
+      case 500:
+        return 'An unexpected server error occurred. Please try again later.';
+
+      case 502:
+      case 503:
+      case 504:
+        return 'The service is temporarily unavailable. Please try again later.';
+
+      default:
+        return 'Something went wrong. Please try again.';
+    }
   }
 }
