@@ -25,4 +25,14 @@ export class PrismaProductRepository
 
         return ProductMapper.fromPrisma(product);
     }
+
+    async create(
+        product: Product
+    ): Promise<Product> {
+        const created = await prisma.product.create({
+            data: ProductMapper.toCreatePrisma(product),
+        });
+
+        return ProductMapper.fromPrisma(created);
+    }
 }

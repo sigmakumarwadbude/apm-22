@@ -1,0 +1,32 @@
+info:
+  name: Create Product
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: http://localhost:3000/api/products
+  body:
+    type: json
+    data: |-
+      {
+        "productName": "Cordless Drill",
+        "productCode": "TBX-0101",
+        "releaseDate": "2026-08-02",
+        "description": "18V cordless drill with two batteries.",
+        "price": 129.99,
+        "starRating": 4.7,
+        "imageUrl": "drill.png",
+        "tags": [
+          "tool",
+          "power",
+          "drill"
+        ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

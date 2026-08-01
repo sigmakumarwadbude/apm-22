@@ -20,4 +20,9 @@ router.get(
     asyncHandler(controller.getById),
 );
 
+router.post(
+    '/products',
+    asyncHandler(controller.create)
+)
+
 export default router;

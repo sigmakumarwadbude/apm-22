@@ -25,4 +25,15 @@ export class ProductService {
 
         return ProductMapper.toDto(product);
     }
+
+    async create(
+        dto: CreateProductDto
+    ): Promise<ProductDto> {
+
+        const product = ProductMapper.toDomain(dto);
+
+        const created = await this.repository.create(product);
+
+        return ProductMapper.toDto(created);
+    }
 }
