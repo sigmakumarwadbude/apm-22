@@ -1,13 +1,14 @@
+import { APP, HTTP_STATUS } from "../shared/constants";
 import { Request, Response } from "express";
 
-export class HealthController{
-    getHealth = (req: Request, res: Response) => {
-        res.status(200).json({
-            message: "Server is running.",
-            success: true,
-            timestamp: new Date(),
-            version: '1.0.0',
-            path: req.url
-        });
+export class HealthController {
+    readonly getHealth = (req: Request, res: Response) => {
+        res.status(HTTP_STATUS.OK).json({
+      success: true,
+      application: APP.NAME,
+      version: APP.VERSION,
+      timestamp: new Date().toISOString(),
+      path: req.originalUrl,
+    });
     }
 }

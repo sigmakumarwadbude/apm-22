@@ -5,6 +5,8 @@ import compression from 'compression';
 import morgan from 'morgan';
 
 import router from './routes/index.routes';
+import { errorMiddleware } from './middleware/error.middleware';
+import { notFoundMiddleware } from './middleware/not-found.middleware';
 
 const app = express();
 
@@ -16,5 +18,9 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 app.use('/api', router);
+
+app.use(notFoundMiddleware);
+
+app.use(errorMiddleware);
 
 export default app;
