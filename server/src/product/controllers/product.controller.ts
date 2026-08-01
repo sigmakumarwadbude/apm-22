@@ -11,4 +11,10 @@ export class ProductController {
     const products = await this.service.getAll();
     res.json(products);
   };
+
+  getById = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    const product = await this.service.getById(id);
+    res.json(product);
+  };
 }

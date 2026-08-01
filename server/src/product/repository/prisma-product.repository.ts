@@ -14,5 +14,15 @@ export class PrismaProductRepository
         return products.map(ProductMapper.fromPrisma);
     }
 
-    
+    async findById(id: number): Promise<Product | null> {
+        const product = await prisma.product.findUnique({
+            where: { id },
+        });
+
+        if (!product) {
+            return null;
+        }
+
+        return ProductMapper.fromPrisma(product);
+    }
 }

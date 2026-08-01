@@ -15,5 +15,14 @@ export class ProductService {
         return products.map(ProductMapper.toDto);
     }
 
+    async getById(productId: number): Promise<ProductDto> {
 
+        const product = await this.repository.findById(productId);
+
+        if (!product) {
+            throw new Error('Product not found');
+        }
+
+        return ProductMapper.toDto(product);
+    }
 }
