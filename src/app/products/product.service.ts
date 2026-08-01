@@ -2,46 +2,89 @@ import { inject, Injectable } from '@angular/core';
 import { Product } from './product';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError, Observable, catchError, map, of } from 'rxjs';
+import { ProductDto } from './product.dto';
+import { ProductMapper } from './product.mapper';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private readonly productsURL = 'products/products.json';
+  private readonly productsURL = `${environment.apiUrl}/products`;
   private readonly http: HttpClient = inject(HttpClient);
 
   /**
    * Fetches all products from the data source.
    */
-  getProducts(): Observable<ReadonlyArray<Product>> {
+  getProducts(): Observable<readonly Product[]> {
     return this.http
-      .get<ReadonlyArray<Product>>(this.productsURL)
-      .pipe(catchError(error => this.handleError(error)));
+      .get<readonly ProductDto[]>(this.productsURL)
+      .pipe(
+        map(ProductMapper.fromDtos),
+        catchError(error => this.handleError(error))
+      );
   }
 
   /**
-   * Fetches a single product by ID.
-   * Returns Observable<Product | null>.
+   * Fetch a product by id.
    */
-  getProductById(id: number): Observable<Product | null> {
-    if (isNaN(id) || id <= 0) {
-      return of(null);
-    }
-    return this.getProducts().pipe(
-      map(products => products.find(p => p.productId === id) ?? null),
-      catchError(error => this.handleError(error))
-    );
+  getProductById(id: number): Observable<Product> {
+    return this.http
+      .get<ProductDto>(`${this.productsURL}/${id}`)
+      .pipe(
+        map(ProductMapper.fromDto),
+        catchError(error => this.handleError(error))
+      );
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    let message: string;
+    if (!environment.production) {
+      console.error('HTTP Error:', error);
 
-    if (error.status === 0) {
-      message = 'Network error. Please check your internet connection.';
-    } else {
-      message = `Server returned code ${error.status}: ${error.message}`;
+      const message =
+        error.error?.message ??
+        `HTTP ${error.status}`;
+
+      return throwError(() => new Error(message));
     }
 
-    return throwError(() => new Error(message));
+    return throwError(() => new Error(this.getUserMessage(error)));
+  }
+
+  private getUserMessage(error: HttpErrorResponse): string {
+    if (error.status === 0) {
+      return 'Unable to connect to the server. Please check your internet connection.';
+    }
+
+    switch (error.status) {
+      case 400:
+        return 'The request could not be processed. Please verify your input and try again.';
+
+      case 401:
+        return 'Your session has expired. Please sign in again.';
+
+      case 403:
+        return 'You do not have permission to perform this action.';
+
+      case 404:
+        return 'The requested resource could not be found.';
+
+      case 409:
+        return 'The requested operation could not be completed because of a conflict.';
+
+      case 422:
+        return 'One or more values are invalid. Please review your input.';
+
+      case 500:
+        return 'An unexpected server error occurred. Please try again later.';
+
+      case 502:
+      case 503:
+      case 504:
+        return 'The service is temporarily unavailable. Please try again later.';
+
+      default:
+        return 'Something went wrong. Please try again.';
+    }
   }
 }

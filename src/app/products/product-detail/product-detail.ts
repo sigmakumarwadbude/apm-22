@@ -1,4 +1,4 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Star } from '../../shared/star/star';
 import { ConvertToSpacesPipe } from '../../shared/convert-to-spaces-pipe';
@@ -8,7 +8,7 @@ import { injectPageTitle } from '../../shared/route-data';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [CommonModule, Star, ConvertToSpacesPipe, CurrencyPipe],
+  imports: [CommonModule, Star, ConvertToSpacesPipe, CurrencyPipe, DatePipe],
   templateUrl: './product-detail.html',
 })
 export class ProductDetail {
