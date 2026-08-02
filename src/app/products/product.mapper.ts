@@ -1,5 +1,6 @@
 import { Product } from "./product";
-import { ProductDto } from "./product.dto";
+import { ProductDto } from "./dto/product.dto";
+import { CreateProductDto, UpdateProductDto } from "./dto/create-product.dto";
 
 
 export class ProductMapper {
@@ -19,5 +20,32 @@ export class ProductMapper {
 
     static fromDtos(dtos: readonly ProductDto[]): readonly Product[] {
         return dtos.map(ProductMapper.fromDto);
+    }
+
+    static toCreateDto(product: Product): CreateProductDto {
+        return {
+            productName: product.productName,
+            productCode: product.productCode,
+            releaseDate: product.releaseDate,
+            description: product.description,
+            price: product.price,
+            starRating: product.starRating,
+            imageUrl: product.imageUrl,
+            tags: product.tags ?? [],
+        };
+    }
+
+    static toDto(product: Product): UpdateProductDto {
+        return {
+            productId: product.productId,
+            productName: product.productName,
+            productCode: product.productCode,
+            releaseDate: product.releaseDate,
+            description: product.description,
+            price: product.price,
+            starRating: product.starRating,
+            imageUrl: product.imageUrl,
+            tags: product.tags ?? [],
+        };
     }
 }
