@@ -13,7 +13,9 @@ export class ProductMapper {
             description: dto.description,
             price: dto.price,
             starRating: dto.starRating,
-            imageUrl: dto.imageUrl,
+            imageUrl: dto.imageUrl.startsWith('/images/')
+                ? dto.imageUrl
+                : `/images/${dto.imageUrl}`,
             tags: dto.tags,
         };
     }

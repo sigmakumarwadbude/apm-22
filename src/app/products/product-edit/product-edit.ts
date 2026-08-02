@@ -1,10 +1,8 @@
-import { Component, computed, effect, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { Product } from '../product';
 import { form, max, min, minLength, required } from '@angular/forms/signals';
 import { ProductFacade } from '../product-facade';
-import { ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { createEmptyProduct } from '../product.factory';
 import { injectPageTitle } from '../../shared/route-data';
 
@@ -14,7 +12,6 @@ import { injectPageTitle } from '../../shared/route-data';
 })
 export class ProductEdit {
   private readonly facade = inject(ProductFacade);
-  private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
   /**
