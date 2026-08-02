@@ -1,6 +1,6 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, OnInit, signal } from '@angular/core';
 import { Product } from '../product';
-import { form,  max, min, minLength, required } from '@angular/forms/signals';
+import { form, max, min, minLength, required } from '@angular/forms/signals';
 import { ProductFacade } from '../product-facade';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -44,12 +44,9 @@ export class ProductEdit {
    * /products/0/edit  => New Product
    * /products/:id/edit => Existing Product
    */
-  readonly productId = toSignal(
-    this.route.paramMap.pipe(
-      map(params => Number(params.get('id') ?? 0))
-    ),
-    { initialValue: 0 }
-  );
+  readonly id = input.required({
+    transform: (value: string) => Number(value)
+  });
 
   /**
    * Signal Form
@@ -75,7 +72,7 @@ export class ProductEdit {
   constructor() {
     // Initialize product whenever the route changes.
     effect(() => {
-      this.facade.initializeProduct(this.productId());
+      this.facade.initializeProduct(this.id());
     });
 
     // Synchronize the local editable copy with the facade.

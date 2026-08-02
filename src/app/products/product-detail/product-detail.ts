@@ -1,5 +1,5 @@
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import { Star } from '../../shared/star/star';
 import { ConvertToSpacesPipe } from '../../shared/convert-to-spaces-pipe';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,16 +21,13 @@ export class ProductDetail {
 
   readonly product = this.facade.selectedProduct;
 
-  readonly productId = toSignal(
-    this.route.paramMap.pipe(
-      map(params => Number(params.get('id') ?? 0))
-    ),
-    { initialValue: 0 }
-  );
+  readonly id = input.required({
+    transform: (value: string) => Number(value)
+  });
 
   constructor() {
     effect(() => {
-      this.facade.initializeProduct(this.productId());
+      this.facade.initializeProduct(this.id());
     });
   }
 
