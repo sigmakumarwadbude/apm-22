@@ -6,9 +6,19 @@
     </label>
 
     <input id="imageUrl" type="url" placeholder="https://example.com/image.png" [formField]="vm.productForm.imageUrl"
-      class="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200" />
+      class="input" />
   </div>
 
-  <!-- Tags (comma separated example) -->
-  <!-- Note: Depending on your signal forms array implementation, you might need a different binding here. We'll map it to a simple string field or leave it for further integration. -->
+  <div>
+    <label for="tags" class="mb-2 block text-sm font-medium text-slate-700">
+      Tags
+    </label>
+
+    <app-tag-input label="Search Tags" placeholder="Search keywords separated by commas" [(tags)]="vm.product().tags">
+    </app-tag-input>
+
+    <p class="mt-2 text-sm text-slate-500">
+      Separate multiple tags with commas.
+    </p>
+  </div>
 </form>

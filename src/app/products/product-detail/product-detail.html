@@ -62,6 +62,13 @@
         </span>
       </div>
 
+      <div class="grid grid-cols-3 gap-4">
+        <span class="font-semibold text-slate-700">Tags</span>
+        <span class="col-span-2 text-slate-900">
+          {{ selectedProduct.tags?.join(', ') }}
+        </span>
+      </div>
+
       <div class="grid grid-cols-3 gap-4 items-center">
         <span class="font-semibold text-slate-700">5 Star Rating</span>
 
@@ -69,7 +76,6 @@
           <app-star [rating]="selectedProduct.starRating" />
         </div>
       </div>
-
     </div>
 
     <!-- Product Image -->
