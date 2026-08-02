@@ -4,7 +4,7 @@
     <div>
         <app-form-field label="Product Name" fieldId="productName">
             <input id="productName" [formField]="vm.productForm.productName" class="input" />
-            <app-form-errors [field]="vm.productForm.productName" />
+            <app-form-errors [state]="vm.productForm.productName()" />
         </app-form-field>
     </div>
 
@@ -14,7 +14,7 @@
             <textarea id="description" rows="4" placeholder="Enter product description"
                 [formField]="vm.productForm.description" class="input">
             </textarea>
-            <app-form-errors [field]="vm.productForm.description" />
+            <app-form-errors [state]="vm.productForm.description()" />
         </app-form-field>
 
     </div>
@@ -25,7 +25,7 @@
         <div>
             <app-form-field label="Release Date" fieldId="releaseDate">
                 <input id="releaseDate" [formField]="vm.productForm.releaseDate" class="input" type="date" />
-                <app-form-errors [field]="vm.productForm.releaseDate" />
+                <app-form-errors [state]="vm.productForm.releaseDate()" />
             </app-form-field>
         </div>
 
@@ -34,7 +34,7 @@
             <app-form-field label="Product Code" fieldId="productCode">
                 <input id="productCode" type="text" placeholder="Enter product code"
                     [formField]="vm.productForm.productCode" class="input" />
-                <app-form-errors [field]="vm.productForm.productCode" />
+                <app-form-errors [state]="vm.productForm.productCode()" />
             </app-form-field>
         </div>
     </div>
@@ -47,7 +47,7 @@
             <app-form-field label="Price ($)" fieldId="price">
                 <input id="price" type="number" step="0.01" placeholder="0.00" [formField]="vm.productForm.price"
                     class="input" />
-                <app-form-errors [field]="vm.productForm.price" />
+                <app-form-errors [state]="vm.productForm.price()" />
             </app-form-field>
         </div>
 
@@ -56,7 +56,7 @@
             <app-form-field label="Star Rating (1–5)" fieldId="starRating">
                 <input id="starRating" type="number" step="0.5" placeholder="1–5"
                     [formField]="vm.productForm.starRating" class="input" />
-                <app-form-errors [field]="vm.productForm.starRating" />
+                <app-form-errors [state]="vm.productForm.starRating()" />
             </app-form-field>
         </div>
     </div>

@@ -1,22 +1,21 @@
-import { Component, input } from '@angular/core';
+import { Component, effect, input, Signal } from '@angular/core';
+import { Field, FieldState, ValidationError } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-form-errors',
   imports: [],
   template:`
-  @if(field().touched() && field().invalid()) {
+  @if (state().touched() && state().invalid()) {
 
-    @for(error of field().errors(); track error.message) {
+  @for (error of state().errors(); track error.message) {
 
-        <p class="text-sm text-red-600">
-            {{ error.message }}
-        </p>
+      <p>{{ error.message }}</p>
 
-    }
+  }
 
 }
   `,
 })
 export class FormErrors {
-  readonly field = input.required<any>();
+  readonly state = input.required<FieldState<any>>();
 }

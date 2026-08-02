@@ -101,7 +101,14 @@ export class ProductEdit {
     }
 
     // TODO
-    // this.facade.saveProduct(this.product());
+    this.facade.saveProduct(this.product())
+      .subscribe({
+        next: (product) => {
+          this.product.set(product);
+          this.router.navigate(['/products']);
+        }
+      });
+
   }
 
   deleteProduct(): void {

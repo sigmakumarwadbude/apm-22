@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { finalize, Observable } from 'rxjs';
+import { catchError, finalize, Observable, tap, throwError } from 'rxjs';
 
 import { Product } from './product';
 import { ProductService } from './product.service';
@@ -78,40 +78,34 @@ export class ProductFacade {
    * Checks cached products before making an HTTP request.
    */
   loadProductById(id: number): void {
-    if (Number.isNaN(id) || id <= 0) {
-      this._selectedProduct.set(null);
-      this.setError('Invalid product ID');
-      return;
-    }
-
-    this.clearError();
-
-    // Try cache first
-    const cachedProduct = this.products().find(
-      product => product.productId === id
-    );
-
-    if (cachedProduct) {
-      this._selectedProduct.set(cachedProduct);
-      return;
-    }
-
-    // Clear previous selection while loading
+  if (Number.isNaN(id) || id <= 0) {
     this._selectedProduct.set(null);
+    this.setError('Invalid product ID');
+    return;
+  }
 
-    this.executeRequest(
-      this.productService.getProductById(id),
-      product => {
-        if (!product) {
-          this._selectedProduct.set(null);
-          this.setError(`Product with ID ${id} was not found`);
-          return;
+  this.clearError();
+  this._selectedProduct.set(null);
+
+  this.executeRequest(
+    this.productService.getProductById(id),
+    product => {
+      this._selectedProduct.set(product);
+
+      this._products.update(products => {
+        const index = products.findIndex(p => p.productId === product.productId);
+
+        if (index === -1) {
+          return [...products, product];
         }
 
-        this._selectedProduct.set(product);
-      }
-    );
-  }
+        return products.map(p =>
+          p.productId === product.productId ? product : p
+        );
+      });
+    }
+  );
+}
 
   /**
    * Initializes selected product.
@@ -127,6 +121,50 @@ export class ProductFacade {
     }
 
     this.loadProductById(id);
+  }
+
+  saveProduct(product: Product): Observable<Product> {
+  return product.productId === 0
+    ? this.createProduct(product)
+    : this.updateProduct(product);
+}
+
+  createProduct(product: Product): Observable<Product> {
+    this.clearError();
+
+    return this.productService
+      .createProduct(product)
+      .pipe(
+        tap(saved => {
+          this._products.update(products => [...products, saved]);
+          this._selectedProduct.set(saved);
+        }),
+        catchError(error => {
+          this.setError(error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  updateProduct(product: Product): Observable<Product> {
+    this.clearError();
+
+    return this.productService
+      .updateProduct(product)
+      .pipe(
+        tap(saved => {
+          this._products.update(products =>
+            products.map(p =>
+              p.productId === saved.productId ? saved : p
+            )
+          );
+          this._selectedProduct.set(saved);
+        }),
+        catchError(error => {
+          this.setError(error);
+          return throwError(() => error);
+        })
+      );
   }
 
   /**
@@ -165,21 +203,21 @@ export class ProductFacade {
   }
 
   private setError(error: unknown): void {
-  if (typeof error === 'string') {
-    this._error.set(error);
-    return;
-  }
+    if (typeof error === 'string') {
+      this._error.set(error);
+      return;
+    }
 
-  if (error instanceof HttpErrorResponse) {
-    this._error.set(error.message);
-    return;
-  }
+    if (error instanceof HttpErrorResponse) {
+      this._error.set(error.message);
+      return;
+    }
 
-  if (error instanceof Error) {
-    this._error.set(error.message);
-    return;
-  }
+    if (error instanceof Error) {
+      this._error.set(error.message);
+      return;
+    }
 
-  this._error.set('An unexpected error occurred.');
-}
+    this._error.set('An unexpected error occurred.');
+  }
 }

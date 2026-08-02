@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Product } from './product';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError, Observable, catchError, map, of } from 'rxjs';
-import { ProductDto } from './product.dto';
+import { ProductDto } from './dto/product.dto';
 import { ProductMapper } from './product.mapper';
 import { environment } from '../../environments/environment';
 
@@ -31,6 +31,33 @@ export class ProductService {
   getProductById(id: number): Observable<Product> {
     return this.http
       .get<ProductDto>(`${this.productsURL}/${id}`)
+      .pipe(
+        map(ProductMapper.fromDto),
+        catchError(error => this.handleError(error))
+      );
+  }
+
+  createProduct(
+    product: Product
+  ): Observable<Product> {
+    const dto = ProductMapper.toCreateDto(product);
+    return this.http
+      .post<ProductDto>(this.productsURL, dto)
+      .pipe(
+        map(ProductMapper.fromDto),
+        catchError(error => this.handleError(error))
+      );
+  }
+
+  /**
+ * Update an existing product.
+ */
+  updateProduct(product: Product): Observable<Product> {
+    const dto = ProductMapper.toDto(product);
+    const url = `${this.productsURL}/${product.productId}`;
+
+    return this.http
+      .put<ProductDto>(url, dto)
       .pipe(
         map(ProductMapper.fromDto),
         catchError(error => this.handleError(error))
