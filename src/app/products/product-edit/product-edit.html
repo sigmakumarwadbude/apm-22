@@ -8,11 +8,11 @@
 
   <div class="w-full">
     <nav class="flex border-b border-slate-200 px-6 overflow-visible">
-      <button routerLink="info" routerLinkActive="tab-active" class="wizard-step">
+      <button routerLink="info" routerLinkActive="tab-active" [routerLinkActiveOptions]="{ paths: 'exact', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored' }" class="wizard-step">
         Product Info
       </button>
 
-      <button routerLink="tags" routerLinkActive="tab-active" class="wizard-step">
+      <button routerLink="tags" routerLinkActive="tab-active" [routerLinkActiveOptions]="{ paths: 'exact', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored' }" class="wizard-step">
         Product Tags
       </button>
     </nav>

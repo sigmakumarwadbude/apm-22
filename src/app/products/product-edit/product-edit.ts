@@ -1,10 +1,12 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Product } from '../product';
 import { form, max, min, minLength, required } from '@angular/forms/signals';
 import { ProductFacade } from '../product-facade';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { createEmptyProduct } from '../product.factory';
 import { injectPageTitle } from '../../shared/route-data';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 @Component({
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
@@ -12,6 +14,7 @@ import { injectPageTitle } from '../../shared/route-data';
 })
 export class ProductEdit {
   private readonly facade = inject(ProductFacade);
+  private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
   /**
@@ -36,13 +39,26 @@ export class ProductEdit {
       : `${this.basePageTitle}: ${this.product().productName}`
   );
 
+  private readonly routeId = toSignal(
+    this.route.paramMap.pipe(map(params => params.get('id'))),
+    { initialValue: null }
+  );
+
   /**
    * Route:
-   * /products/0/edit  => New Product
+   * /products/new      => New Product
    * /products/:id/edit => Existing Product
    */
-  readonly id = input.required({
-    transform: (value: string) => Number(value)
+  readonly id = computed(() => {
+    const rawId = this.routeId();
+
+    if (!rawId) {
+      return 0;
+    }
+
+    const id = Number(rawId);
+
+    return Number.isFinite(id) ? id : 0;
   });
 
   /**

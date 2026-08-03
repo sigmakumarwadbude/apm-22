@@ -18,8 +18,8 @@ const loadProductEditTags = () =>
 const productEditChildren: Routes = [
   {
     path: '',
-    loadComponent: loadProductEditInfo,
-    data: { title: 'Product Info' },
+    redirectTo: 'info',
+    pathMatch: 'full',
   },
   {
     path: 'info',
