@@ -107,3 +107,49 @@
          outline-none transition
          focus:border-blue-500 focus:ring-2 focus:ring-blue-200;
 }
+
+.slide-panel {
+  animation: slide-panel-in 220ms ease-out both;
+  will-change: transform, opacity;
+}
+
+.route-shell {
+  animation: var(--route-animation);
+  will-change: transform, opacity;
+}
+
+@keyframes slide-panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes route-slide-in-a {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes route-slide-in-b {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
