@@ -14,6 +14,7 @@
         <th class="px-4 py-3 text-right">Price</th>
         <th class="px-4 py-3 text-center">Rating</th>
         <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody class="divide-y divide-slate-100 bg-white">
@@ -53,6 +54,11 @@
             Edit
           </a>
         </td>
+        <td>
+          <button type="button" (click)="onDeleteProduct(product)"
+            class="rounded bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700">
+            Delete
+          </button>
       </tr>
       }
     </tbody>

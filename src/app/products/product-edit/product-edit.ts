@@ -122,13 +122,22 @@ export class ProductEdit {
   }
 
   deleteProduct(): void {
-    if (this.product().productId === 0) {
+    const id = this.product().productId;
+    if (this.product().productId === 0 || !id) {
       this.cancel();
       return;
     }
 
-    // TODO
-    // this.facade.deleteProduct(this.product().productId);
+    if (!confirm(`Delete "${this.product().productName}"?`)) {
+      return;
+    }
+    this.facade.deleteProduct(id).subscribe({
+      next: () => {
+        this.router.navigate(['/products'], {
+          queryParamsHandling: 'preserve',
+        });
+      },
+    });
   }
 
   cancel(): void {

@@ -54,4 +54,8 @@ export class ProductList implements OnInit {
   onRatingClicked(message: string): void {
     this.pageTitle.set(`Product List ${message}`);
   }
+
+  onDeleteProduct(id: number): void {
+    this.facade.deleteProduct(id).subscribe();
+  }
 }

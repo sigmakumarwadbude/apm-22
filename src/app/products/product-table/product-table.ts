@@ -16,6 +16,7 @@ export class ProductTable {
   readonly showImage = model(false);
   readonly filter = input('');
   readonly ratingClicked = output<string>();
+  readonly deleteProduct = output<number>();
 
   onRatingClicked(message: string): void {
     this.ratingClicked.emit(message);
@@ -23,5 +24,12 @@ export class ProductTable {
 
   toggleImage(): void {
     this.showImage.set(!this.showImage());
+  }
+
+  onDeleteProduct(product: Product): void {
+    if (!confirm(`Delete "${product.productName}"?`)) {
+      return;
+    }
+    this.deleteProduct.emit(product.productId);
   }
 }

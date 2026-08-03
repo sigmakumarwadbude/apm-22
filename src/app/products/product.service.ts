@@ -64,6 +64,13 @@ export class ProductService {
       );
   }
 
+  deleteProduct(id: number): Observable<void> {
+    const url = `${this.productsURL}/${id}`;
+    return this.http.delete<void>(url).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (!environment.production) {
       console.error('HTTP Error:', error);

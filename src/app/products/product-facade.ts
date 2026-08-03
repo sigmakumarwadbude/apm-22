@@ -167,6 +167,21 @@ export class ProductFacade {
       );
   }
 
+  deleteProduct(id: number): Observable<void> {
+    this.clearError();
+
+    return this.productService.deleteProduct(id).pipe(
+      tap(() => {
+        this._products.update(products => products.filter(p => p.productId !== id));
+        this._selectedProduct.set(null);
+      }),
+      catchError(error => {
+        this.setError(error);
+        return throwError(() => error);
+      })
+    );
+  }
+
   /**
    * Clears selected product.
    */
