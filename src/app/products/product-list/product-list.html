@@ -37,8 +37,9 @@
         [products]="filteredProducts()"
         [(showImage)]="showImage"
         [filter]="listFilter()"
-        (ratingClicked)="onRatingClicked($event)">
-      </app-product-table>
+        (ratingClicked)="onRatingClicked($event)"
+        (deleteProduct)="onDeleteProduct($event)">
+      </app-product-table >
 
     }
 
