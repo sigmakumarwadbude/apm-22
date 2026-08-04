@@ -15,9 +15,7 @@
 
     @if (facade.loading()) {
 
-      <div class="py-10 text-center">
-        Loading products...
-      </div>
+      <app-spinner [message] = "'Loading products...'" />
 
     } @else if (facade.error()) {
 
