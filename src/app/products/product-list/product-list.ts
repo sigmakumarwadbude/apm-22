@@ -5,10 +5,11 @@ import { ProductTable } from '../product-table/product-table';
 import { FormsModule } from '@angular/forms';
 import { ProductFacade } from '../product-facade';
 import { ActivatedRoute } from '@angular/router';
+import { Spinner } from '../../shared/ui/spinner/spinner'
 
 @Component({
   selector: 'app-product-list',
-  imports: [CommonModule, ProductFilter, ProductTable, FormsModule],
+  imports: [CommonModule, ProductFilter, ProductTable, FormsModule, Spinner],
   templateUrl: './product-list.html',
   styles: [
     `
