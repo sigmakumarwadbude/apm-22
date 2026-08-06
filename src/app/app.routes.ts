@@ -13,6 +13,9 @@ export const routes: Routes = [
       import('./products/products.routes').then(
         (m) => m.productRoutes
       ),
+    data: {
+      preload: true
+    }
   },
   {
     path: 'login',

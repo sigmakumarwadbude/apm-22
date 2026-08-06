@@ -1,19 +1,10 @@
 import { Route, Routes } from '@angular/router';
 
-const loadProductList = () =>
-  import('./product-list/product-list').then((m) => m.ProductList);
-
-const loadProductDetail = () =>
-  import('./product-detail/product-detail').then((m) => m.ProductDetail);
-
-const loadProductEdit = () =>
-  import('./product-edit/product-edit').then((m) => m.ProductEdit);
-
-const loadProductEditInfo = () =>
-  import('./product-edit/product-edit-info').then((m) => m.ProductEditInfo);
-
-const loadProductEditTags = () =>
-  import('./product-edit/product-edit-tags').then((m) => m.ProductEditTags);
+import { ProductList } from './product-list/product-list';
+import { ProductDetail } from './product-detail/product-detail';
+import { ProductEdit } from './product-edit/product-edit';
+import { ProductEditInfo } from './product-edit/product-edit-info';
+import { ProductEditTags } from './product-edit/product-edit-tags';
 
 const productEditChildren: Routes = [
   {
@@ -23,19 +14,19 @@ const productEditChildren: Routes = [
   },
   {
     path: 'info',
-    loadComponent: loadProductEditInfo,
+    component: ProductEditInfo,
     data: { title: 'Product Info' },
   },
   {
     path: 'tags',
-    loadComponent: loadProductEditTags,
+    component: ProductEditTags,
     data: { title: 'Product Tags' },
   },
 ];
 
 const productEditRoute = (path: string, title: string): Route => ({
   path,
-  loadComponent: loadProductEdit,
+  component: ProductEdit,
   data: { title },
   children: productEditChildren,
 });
@@ -43,12 +34,12 @@ const productEditRoute = (path: string, title: string): Route => ({
 export const productRoutes: Routes = [
   {
     path: '',
-    loadComponent: loadProductList,
+    component: ProductList,
   },
   productEditRoute('new', 'New Product'),
   {
     path: ':id',
-    loadComponent: loadProductDetail,
+    component: ProductDetail,
     data: { title: 'Product Detail' },
   },
   productEditRoute(':id/edit', 'Edit Product'),
